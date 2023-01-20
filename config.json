@@ -1,0 +1,87 @@
+{
+	"hostname" :"localhost",
+	"port": 8101,
+	"mongodb": {
+		"hostname": "172.52.50.174",
+		"port":"27017",
+		"uri": "mongodb://172.52.50.174:27017",
+		"db_name": "membrainLocal",
+		"options": {
+			"poolSize": 5,
+			"loggerLevel": "error",
+			"appname": "MemBrainServer",
+			"useNewUrlParser": true,
+			"useUnifiedTopology": true
+		}
+	},
+	"mysql":{
+		"hostname": "172.52.50.174",
+		"port":"3306",
+		"user": "root",
+		"password": "root",
+		"db_name": "membrain",
+		"dialect": "mysql",
+		"dialectOptions": {
+			"useUTC": false
+		},
+		"timezone": "+05:30",
+		"pool": {
+		  "max": 100,
+		  "min": 0,
+		  "acquire": 30000,
+		  "idle": 10000
+		},
+		"tableName":"performance_local"
+	},
+	"auth": {
+		"expires": "2 hours",
+		"salt": "123IamNotSecure",
+		"provider": "ldap",
+		"options": {
+			"url": "ldap://192.168.1.16:389/",
+			"searchBase": "DC=EZEST,DC=Local",
+			"searchAttribute": "sAMAccountName"
+		}
+	},
+	"registration": true,
+	"nodeRedPortStartRange":2500,
+	"nodeRedPortEndRange" : 2550,
+	"nodeRedInstanceDir":"./node_red_process/",
+	"nodeRedUrl":"http://localhost:1880",
+	"nodeRedInstanceServer" : "localhost",
+	"camundaUrl" : "http://172.52.20.21:8080/engine-rest",
+	"kafka" : {
+		"url" : "http://172.52.20.50:8083",
+		"kafka_host" : "172.52.20.50:9092",
+		"schema_reg_host" : "http://172.52.20.50:8081",
+		"topic":{
+			"replicationFactor": 1,
+			"partitions": 0,
+			"offset":"latest"
+		},
+		"consumer":{
+			"autoCommit": true,
+			"groupId":"Acti-on",
+			"fromOffset": "latest", 
+			"encoding": "buffer"
+		}
+	},
+	"email":{
+		"user":"Membrain",
+		"pass":"Ezest@123",
+		"from":"membrain@e-zest.in",
+		"hostname": "webmail.e-zest.in",
+		"port":25
+	},
+	"sourcePasswordSecret" : "MySourcePasswordSecret",
+	"Zoom":{
+		"apiKey": "SUvCKiMISwaMMGwq4Gh2RQ",
+		"apiSecret": "4p4MzYQLlbVeCQbCjLrIV4RZPhAAwGO91uMy"
+	},
+	"Mailer":{
+		"user": "projectpoc@e-zest.com",
+		"pass": "LPS#msf#897@1!",
+		"port": 587,
+		"host": "smtp.office365.com"
+	}
+}
