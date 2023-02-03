@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+
+const { ObjectId } = mongoose.Schema.Types;
+
 const userSchema = new mongoose.Schema({
     userName: {
         type: String,
@@ -16,7 +19,15 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    tests: {
+        testId: {
+            type: ObjectId,
+            ref: "TestModel"
+        },
+        startDate: String,
+        endDate: String
+    },
     versionKey: false
 })
 
-mongoose.model("UserModel",userSchema);
+mongoose.model("UserModel", userSchema);

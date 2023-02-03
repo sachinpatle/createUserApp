@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {ObjectId} = mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types
 
 const testSchema = new mongoose.Schema({
     domain: {
@@ -15,19 +15,12 @@ const testSchema = new mongoose.Schema({
         required: true
     },
     postedBy: {
-        type: ObjectId, ref: "UserModel"
+        type: ObjectId,
+        ref: "UserModel"
     },
-    positionForUser: [{
-        email: String,
-        postedfor: { type: ObjectId, ref: "UserModel" }
-    }],
-    file: {
-        fileBase64: String,
-        postedBy:
-        {
-            type: ObjectId,
-            ref: "UserModel"
-        }
+    filePath: {
+        type: String,
+        required: true
     },
     fileName: {
         type: String,
