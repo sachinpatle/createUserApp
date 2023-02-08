@@ -8,6 +8,7 @@ const app = express();
 require('./connection/connection');
 require('./models/user');
 require('./models/test');
+require('./models/completedTest');
 
 // const requireLogin = require('./middleware/loginRequired');
 

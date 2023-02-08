@@ -61,7 +61,6 @@ router.delete('/deleteUser', (req, res) => {
         })
 })
 
-
 router.get("/allUser", (req, res) => {
     User.find()
         .select("-password")
@@ -125,7 +124,6 @@ router.post("/login", (req, res) => {
                 .catch((error) => { console.log(error) })
         })
 })
-
 
 router.post("/meeting/new", async (req, res) => {
     if (_.isEmpty(req.body)) {

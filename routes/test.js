@@ -2,11 +2,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
 const fs = require('fs');
-const { result } = require('underscore');
-const { debug } = require('console');
 
 const Test = mongoose.model('TestModel')
 const User = mongoose.model('UserModel')
+const CompletedTest = mongoose.model('CompletedTestModel')
 
 
 router.patch("/assingTestToUser", async (req, res) => {
@@ -68,8 +67,6 @@ router.post("/getTestByUserId", async (req, res) => {
     }
 })
 
-
-
 router.post("/allTest", async (req, res) => {
     try {
         const { id } = req.body;
@@ -112,7 +109,7 @@ router.post("/createTest", (req, res) => {
 
     fs.writeFileSync(path, data, 'base64');
 
-    const post = new Test({
+    const test = new Test({
         domain,
         language,
         position,
@@ -120,7 +117,7 @@ router.post("/createTest", (req, res) => {
         filePath: path,
         fileName
     })
-    post.save().then(result => {
+    test.save().then(result => {
         res.json({ test: result })
     }).catch(err => {
         console.log("err while create test", err);
@@ -128,6 +125,63 @@ router.post("/createTest", (req, res) => {
         res.end(err.message);
         return;
     })
+})
+
+router.post('/addCompletedTest', (req, res) => {
+    try {
+        const { postedById, fileName, file } = req.body;
+        if (!postedById || !fileName || !file) {
+            return res.json({ error: "Please provide mandatory fields" });
+        }
+        const timestamp = Date.now();
+
+        const path = 'completed_testzips/' + `${timestamp}${fileName}`;
+
+        const [type, data] = file.split(';base64,');
+
+        fs.writeFileSync(path, data, 'base64');
+
+        const completedTest = new CompletedTest({
+            filePath: path,
+            fileName: fileName,
+            postedBy: postedById
+        })
+        completedTest.save().then((completedTests) => {
+            res.json({ completedTests: completedTests });
+        }).catch((err) => {
+            res.writeHead(500, { "Content-Type": "text/plain" })
+            res.end(err.message);
+            return;
+        })
+    } catch (error) {
+        console.log("complete test error", error);
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end(error.message);
+        return;
+    }
+})
+
+router.get('/getAllCompletedTest', async (req, res) => {
+    try {
+        let completedTestArray = [];
+        let allcompletedTest = await CompletedTest.find().populate("postedBy", "userName email");
+        let completedTests = JSON.parse(JSON.stringify(allcompletedTest));
+        if (completedTests.length > 0) {
+            for (let ctest of completedTests) {
+                let fileData = fs.readFileSync(ctest.filePath, 'base64');
+                if (!fileData) {
+                    throw new Error(`File not found : ${ctest.filePath}`);
+                }
+                completedTestArray.push({ ctdata: fileData, userDetails: ctest.postedBy });
+            }
+        }
+        res.send(completedTestArray);
+    } catch (error) {
+        console.log("error", error);
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end(error.message);
+        return
+    }
 })
 
 // router.post("/getTestByUserId", async (req, res) => {

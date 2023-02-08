@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types
 
-const testSchema = new mongoose.Schema({
+const testSchema = new mongoose.Schema({    
     domain: {
         type: String,
         required: true
